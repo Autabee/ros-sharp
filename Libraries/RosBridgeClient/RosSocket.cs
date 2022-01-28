@@ -16,6 +16,10 @@ limitations under the License.
 // Adding BSON (de-)seriliazation option
 // Shimadzu corp , 2019, Akira NODA (a-noda@shimadzu.co.jp / you.akira.noda@gmail.com)
 
+// Expanded Advertise, thinning serializers, 2022, Chris Tacke (ctacke@gmail.com)
+
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

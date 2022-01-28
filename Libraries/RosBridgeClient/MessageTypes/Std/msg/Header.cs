@@ -5,6 +5,9 @@
  * - Variable sized arrays will be initialized to array of size 0 
  * Please report any issues at 
  * <https://github.com/siemens/ros-sharp> 
+ 
+ ROS1/ROS2 delineation 2022 by Chris Tacke (ctacke@gmail.com)
+
  */
 
 namespace RosSharp.RosBridgeClient.MessageTypes.Std
