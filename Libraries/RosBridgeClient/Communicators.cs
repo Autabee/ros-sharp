@@ -27,8 +27,19 @@ namespace RosSharp.RosBridgeClient
         {
             return (string)typeof(T).GetField("RosMessageName").GetRawConstantValue();
         }
+
+        public static string GetRosName(Type messageType)
+        {
+            if (!typeof(Message).IsAssignableFrom(messageType))
+            {
+                throw new ArgumentException("messageType parameter must derive from type 'Message'");
+            }
+
+            return (string)messageType.GetField("RosMessageName").GetRawConstantValue();
+        }
     }
-    internal abstract class Publisher : Communicator
+
+    internal abstract class Publisher2 : Communicator
     {
         internal abstract string Id { get; }
         internal abstract string Topic { get; }
@@ -41,21 +52,41 @@ namespace RosSharp.RosBridgeClient
         }
     }
 
-    internal class Publisher<T> : Publisher where T : Message
+    internal class Publisher : Communicator
     {
-        internal override string Id { get; }
-        internal override string Topic { get; }
+        internal string Id { get; }
+        internal string Topic { get; }
+        internal Type MessageType { get; }
 
-        internal Publisher(string id, string topic, out Advertisement advertisement)
+        public Publisher(Type messageType, string id, string topic, out Advertisement advertisement)
         {
+            MessageType = messageType;
             Id = id;
             Topic = topic;
-            advertisement = new Advertisement(Id, Topic, GetRosName<T>());
+            advertisement = new Advertisement(Id, Topic, GetRosName(messageType));
         }
 
-        internal override Communication Publish(Message message)
+        internal Communication Publish(Message message)
         {
-            return new Publication<T>(Id, Topic, (T)message);
+            return new Publication(Id, Topic, message);
+        }
+
+        internal Unadvertisement Unadvertise()
+        {
+            return new Unadvertisement(Id, Topic);
+        }
+    }
+
+    internal class Publisher<T> : Publisher where T : Message
+    {
+        internal Publisher(string id, string topic, out Advertisement advertisement)
+            : base(typeof(T), id, topic, out advertisement)
+        {
+        }
+
+        internal Communication Publish(T message)
+        {
+            return new Publication<T>(Id, Topic, message);
         }
     }
 

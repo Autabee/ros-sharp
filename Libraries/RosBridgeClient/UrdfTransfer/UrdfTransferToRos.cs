@@ -19,7 +19,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
-using Newtonsoft.Json;
 
 using rosapi = RosSharp.RosBridgeClient.MessageTypes.Rosapi;
 using file_server = RosSharp.RosBridgeClient.MessageTypes.FileServer;
@@ -49,12 +48,23 @@ namespace RosSharp.RosBridgeClient.UrdfTransfer
             FilesBeingProcessed = new Dictionary<string, bool>();
         }
 
+        private string SerializeToJson(string s)
+        {
+            // DEV NOTE: the ISerializer was not used here because it returns byte[] and the interface is not public, so it cannot be passed in.
+            // It's a shortcoming n the architecture of this class, but this is a workaround that maintains original behavior, but adds THIN capabilities (ctacke 25Jan22)
+#if THIN
+            return System.Text.Json.JsonSerializer.Serialize(s);
+#else
+            return Newtonsoft.Json.JsonConvert.SerializeObject(s);
+#endif
+        }
+
         public override void Transfer()
         {
             //Publish robot name param
             RosSocket.CallService<rosapi.SetParamRequest, rosapi.SetParamResponse>("/rosapi/set_param",
                 SetRobotNameHandler,
-                new rosapi.SetParamRequest("/robot/name", JsonConvert.SerializeObject(RobotName)));
+                new rosapi.SetParamRequest("/robot/name", SerializeToJson(RobotName)));
             
             PublishRobotDescription();
 
@@ -69,7 +79,7 @@ namespace RosSharp.RosBridgeClient.UrdfTransfer
             //Publish /robot_description param
             RosSocket.CallService<rosapi.SetParamRequest, rosapi.SetParamResponse>("/rosapi/set_param",
                 SetRobotDescriptionHandler,
-                new rosapi.SetParamRequest("/robot_description", JsonConvert.SerializeObject(urdfXDoc.ToString())));
+                new rosapi.SetParamRequest("/robot_description", SerializeToJson(urdfXDoc.ToString())));
 
             //Send URDF file to ROS package
             string urdfPackagePath = "package://" + rosPackage + "/" + Path.GetFileName(urdfFilePath);

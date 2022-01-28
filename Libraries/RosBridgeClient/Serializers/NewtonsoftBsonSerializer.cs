@@ -16,6 +16,7 @@ limitations under the License.
 // Adding BSON (de-)seriliazation option
 // Shimadzu corp , 2019, Akira NODA (a-noda@shimadzu.co.jp / you.akira.noda@gmail.com)
 
+# if !THIN
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -62,3 +63,4 @@ namespace RosSharp.RosBridgeClient
         }
     }
 }
+#endif

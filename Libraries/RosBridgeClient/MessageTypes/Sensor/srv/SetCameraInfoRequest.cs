@@ -7,15 +7,13 @@
  * <https://github.com/siemens/ros-sharp> 
  */
 
-using Newtonsoft.Json;
-
 using RosSharp.RosBridgeClient.MessageTypes.Sensor;
 
 namespace RosSharp.RosBridgeClient.MessageTypes.Sensor
 {
     public class SetCameraInfoRequest : Message
     {
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public const string RosMessageName = "sensor_msgs/SetCameraInfo";
 
         //  This service requests that a camera stores the given CameraInfo 

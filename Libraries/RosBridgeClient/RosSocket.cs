@@ -27,7 +27,13 @@ namespace RosSharp.RosBridgeClient
     public class RosSocket
     {
         public IProtocol protocol;
-        public enum SerializerEnum { Microsoft, Newtonsoft_JSON, Newtonsoft_BSON}
+
+#if !THIN
+        public enum SerializerEnum 
+        { 
+            Microsoft, Newtonsoft_JSON, Newtonsoft_BSON
+        }
+#endif
 
         private Dictionary<string, Publisher> Publishers = new Dictionary<string, Publisher>();
         private Dictionary<string, Subscriber> Subscribers = new Dictionary<string, Subscriber>();
@@ -36,6 +42,16 @@ namespace RosSharp.RosBridgeClient
         private ISerializer Serializer;
         private object SubscriberLock = new object();
 
+#if THIN
+        public RosSocket(IProtocol protocol)
+        {
+            this.protocol = protocol;
+            Serializer = new MicrosoftSerializer();
+
+            this.protocol.OnReceive += (sender, e) => Receive(sender, e);
+            this.protocol.Connect();
+        }
+#else
         public RosSocket(IProtocol protocol, SerializerEnum serializer = SerializerEnum.Microsoft)
         {
             this.protocol = protocol;
@@ -60,6 +76,7 @@ namespace RosSharp.RosBridgeClient
             this.protocol.OnReceive += (sender, e) => Receive(sender, e);
             this.protocol.Connect();
         }
+#endif
 
         public void Close(int millisecondsWait = 0)
         {
@@ -86,6 +103,17 @@ namespace RosSharp.RosBridgeClient
 
         #region Publishers
 
+        public string Advertise(Type type, string topic)
+        {
+            string id = topic;
+            if (Publishers.ContainsKey(id))
+                Unadvertise(id);
+
+            Publishers.Add(id, new Publisher(type, id, topic, out Advertisement advertisement));
+            Send(advertisement);
+            return id;
+        }
+
         public string Advertise<T>(string topic) where T : Message
         {
             string id = topic;
@@ -108,9 +136,9 @@ namespace RosSharp.RosBridgeClient
             Publishers.Remove(id);
         }
 
-        #endregion
+#endregion
 
-        #region Subscribers
+#region Subscribers
 
         public string Subscribe<T>(string topic, SubscriptionHandler<T> subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none") where T : Message
         {
@@ -131,9 +159,9 @@ namespace RosSharp.RosBridgeClient
             Send(Subscribers[id].Unsubscribe());
             Subscribers.Remove(id);
         }
-        #endregion
+#endregion
 
-        #region ServiceProviders
+#region ServiceProviders
 
         public string AdvertiseService<Tin, Tout>(string service, ServiceCallHandler<Tin, Tout> serviceCallHandler) where Tin : Message where Tout : Message
         {
@@ -153,9 +181,9 @@ namespace RosSharp.RosBridgeClient
             ServiceProviders.Remove(id);
         }
 
-        #endregion
+#endregion
 
-        #region ServiceConsumers
+#region ServiceConsumers
 
         public string CallService<Tin, Tout>(string service, ServiceResponseHandler<Tout> serviceResponseHandler, Tin serviceArguments) where Tin : Message where Tout : Message
         {
@@ -166,7 +194,7 @@ namespace RosSharp.RosBridgeClient
             return id;
         }
 
-        #endregion
+#endregion
 
         private void Send<T>(T communication) where T : Communication
         {
