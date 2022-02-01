@@ -1,19 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;net461</TargetFrameworks>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;MS_LIBS_ONLY;ROS2</DefineConstants>
-    <OutputPath>bin\Debug\netstandard</OutputPath>
+    <OutputPath>bin\Debug\ros2</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;MS_LIBS_ONLY;ROS2</DefineConstants>
-    <OutputPath>bin\Release\netstandard</OutputPath>
+    <OutputPath>bin\Release\ros2</OutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="obj\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Properties\AssemblyInfo.cs" />
