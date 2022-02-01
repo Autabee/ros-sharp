@@ -6,13 +6,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;THIN</DefineConstants>
-    <OutputPath>bin\Debug\Thin</OutputPath>
+    <DefineConstants>TRACE;MS_LIBS_ONLY;ROS2</DefineConstants>
+    <OutputPath>bin\Debug\netstandard</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE;THIN</DefineConstants>
-    <OutputPath>bin\Release\Thin</OutputPath>
+    <DefineConstants>TRACE;MS_LIBS_ONLY;ROS2</DefineConstants>
+    <OutputPath>bin\Release\netstandard</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +26,6 @@
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="6.0.1" />
     <PackageReference Include="System.Threading.Channels" Version="6.0.0" />
-    <PackageReference Include="WebSocketSharp.Standard" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>

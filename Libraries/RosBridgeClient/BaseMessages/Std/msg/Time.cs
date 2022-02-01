@@ -20,12 +20,12 @@ namespace RosSharp.RosBridgeClient.MessageTypes.Std
     public class Time : Message
     {
         public const string RosMessageName = "std_msgs/Time";
-#if !ROS1 // ROS2 changed these
+#if ROS2 // ROS2 changed these
         [System.Text.Json.Serialization.JsonPropertyName("sec")]
 #endif
         public uint secs { get; set; }
 
-#if !ROS1
+#if ROS2
         [System.Text.Json.Serialization.JsonPropertyName("nanosec")]
 #endif
         public uint nsecs { get; set; }

@@ -10,11 +10,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#if THIN
+#if MS_LIBS_ONLY
+
 using System;
 
 namespace Newtonsoft.Json
 {
+    // if we're only using MS JSON, this provides a redefinition of JsonIgnore to prevent compiler errors
     public class JsonIgnore : Attribute
     {
     }

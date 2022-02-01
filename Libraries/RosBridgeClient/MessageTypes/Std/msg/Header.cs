@@ -21,7 +21,7 @@ namespace RosSharp.RosBridgeClient.MessageTypes.Std
         //  in a particular coordinate frame.
         //  
         //  sequence ID: consecutively increasing ID 
-#if ROS1
+#if !ROS2
         public uint seq { get; set; }
 #endif
         // Two-integer timestamp that is expressed as:
@@ -41,7 +41,7 @@ namespace RosSharp.RosBridgeClient.MessageTypes.Std
 
         public Header(uint seq, Time stamp, string frame_id)
         {
-#if ROS1
+#if !ROS2
             this.seq = seq;
 #endif
             this.stamp = stamp;

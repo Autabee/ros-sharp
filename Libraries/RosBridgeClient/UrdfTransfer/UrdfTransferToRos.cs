@@ -11,6 +11,8 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+Microsoft-libs only added 2022 by Chris Tacke (ctacke@gmail.com)
 */
 
 using System;
@@ -51,8 +53,8 @@ namespace RosSharp.RosBridgeClient.UrdfTransfer
         private string SerializeToJson(string s)
         {
             // DEV NOTE: the ISerializer was not used here because it returns byte[] and the interface is not public, so it cannot be passed in.
-            // It's a shortcoming n the architecture of this class, but this is a workaround that maintains original behavior, but adds THIN capabilities (ctacke 25Jan22)
-#if THIN
+            // It's a shortcoming in the architecture of this class, but this is a workaround that maintains original behavior, but adds MS_LIBS_ONLY capabilities (ctacke 25Jan22)
+#if MS_LIBS_ONLY
             return System.Text.Json.JsonSerializer.Serialize(s);
 #else
             return Newtonsoft.Json.JsonConvert.SerializeObject(s);

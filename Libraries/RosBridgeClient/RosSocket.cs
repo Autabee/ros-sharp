@@ -32,7 +32,7 @@ namespace RosSharp.RosBridgeClient
     {
         public IProtocol protocol;
 
-#if !THIN
+#if !MS_LIBS_ONLY
         public enum SerializerEnum 
         { 
             Microsoft, Newtonsoft_JSON, Newtonsoft_BSON
@@ -46,7 +46,7 @@ namespace RosSharp.RosBridgeClient
         private ISerializer Serializer;
         private object SubscriberLock = new object();
 
-#if THIN
+#if MS_LIBS_ONLY
         public RosSocket(IProtocol protocol)
         {
             this.protocol = protocol;

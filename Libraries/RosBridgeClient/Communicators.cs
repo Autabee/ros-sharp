@@ -41,19 +41,6 @@ namespace RosSharp.RosBridgeClient
         }
     }
 
-    internal abstract class Publisher2 : Communicator
-    {
-        internal abstract string Id { get; }
-        internal abstract string Topic { get; }
-
-        internal abstract Communication Publish(Message message);
-
-        internal Unadvertisement Unadvertise()
-        {
-            return new Unadvertisement(Id, Topic);
-        }
-    }
-
     internal class Publisher : Communicator
     {
         internal string Id { get; }

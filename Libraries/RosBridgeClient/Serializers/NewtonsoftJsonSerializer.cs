@@ -13,7 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-# if !THIN
+// Microsoft-libs only added 2022 by Chris Tacke (ctacke@gmail.com)
+
+#if !MS_LIBS_ONLY
 
 using System.Text;
 using Newtonsoft.Json;
