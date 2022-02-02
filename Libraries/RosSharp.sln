@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosBridgeClient", "RosBridgeClient\RosBridgeClient.csproj", "{27CD898A-8840-4CDD-A475-4A672FD2EF50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosBridgeClient.ros", "RosBridgeClient\RosBridgeClient.ros.csproj", "{27CD898A-8840-4CDD-A475-4A672FD2EF50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosBridgeClientTest", "RosBridgeClientTest\RosBridgeClientTest.csproj", "{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}"
 EndProject
@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageGeneration", "Messag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageGenerationConsoleTool", "MessageGenerationConsoleTool\MessageGenerationConsoleTool.csproj", "{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RosBridgeClient.netstandard", "RosBridgeClient\RosBridgeClient.netstandard.csproj", "{B30F9989-0F76-42D4-8BF5-62E6B944988A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RosBridgeClient.ros2", "RosBridgeClient\RosBridgeClient.ros2.csproj", "{B30F9989-0F76-42D4-8BF5-62E6B944988A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
