@@ -23,6 +23,11 @@ namespace RosSharp.RosBridgeClient
     public delegate void SubscriptionHandler<T>(T t) where T : Message;
     public delegate bool ServiceCallHandler<Tin, Tout>(Tin tin, out Tout tout) where Tin : Message where Tout : Message;
 
+    // DEV NOTE: Not thrilled with the name, but trying to keep backward compatibility
+    // This allows subscribers to know what topic the incoming data is actually for
+    public delegate void SubscriptionHandler2<T>(string topic, T t) where T : Message;
+    public delegate void SubscriptionHandler2(string topic, Message data);
+
     internal abstract class Communicator
     {
         public static string GetRosName<T>() where T : Message
@@ -84,6 +89,7 @@ namespace RosSharp.RosBridgeClient
         internal abstract string Id { get; }
         internal abstract string Topic { get; }
         internal abstract Type TopicType { get; }
+        internal abstract Subscription CreateSubscription(SubscriptionHandler2 subscriptionHandler);
 
         internal abstract void Receive(string message, ISerializer serializer);
 
@@ -100,6 +106,7 @@ namespace RosSharp.RosBridgeClient
         internal override Type TopicType { get { return typeof(T); } }
 
         internal SubscriptionHandler<T> SubscriptionHandler { get; }
+        internal SubscriptionHandler2<T> SubscriptionHandler2 { get; private set; }
 
         internal Subscriber(string id, string topic, SubscriptionHandler<T> subscriptionHandler, out Subscription subscription, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
         {
@@ -109,9 +116,48 @@ namespace RosSharp.RosBridgeClient
             subscription = new Subscription(id, Topic, GetRosName<T>(), throttle_rate, queue_length, fragment_size, compression);
         }
 
+        internal Subscriber(string id, string topic, SubscriptionHandler2<T> subscriptionHandler, out Subscription subscription, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
+        {
+            Id = id;
+            Topic = topic;
+            SubscriptionHandler2 = subscriptionHandler;
+            subscription = new Subscription(id, Topic, GetRosName<T>(), throttle_rate, queue_length, fragment_size, compression);
+        }
+
+        internal Subscriber(string id, string topic)
+            : this(id, topic, null, 0, 1, int.MaxValue, "none")
+        {
+        }
+
+        internal Subscriber(string id, string topic, SubscriptionHandler2 subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
+        {
+            Id = id;
+            Topic = topic;
+
+            if (subscriptionHandler != null)
+            {
+                // pass the non-generic event to the generic delegate
+                SubscriptionHandler2 = (t, d) =>
+                {
+                    subscriptionHandler?.Invoke(t, d);
+                };
+            }
+        }
+
+        internal override Subscription CreateSubscription(SubscriptionHandler2 subscriptionHandler)
+        {
+            SubscriptionHandler2 = (t, d) =>
+            {
+                subscriptionHandler?.Invoke(t, d);
+            };
+
+            return new Subscription(Id, Topic, GetRosName<T>());
+        }
+
         internal override void Receive(string message, ISerializer serializer)
         {
-            SubscriptionHandler.Invoke(serializer.Deserialize<T>(message));
+            SubscriptionHandler?.Invoke(serializer.Deserialize<T>(message));
+            SubscriptionHandler2?.Invoke(Topic, serializer.Deserialize<T>(message));
         }
     }
 

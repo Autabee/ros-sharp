@@ -140,9 +140,9 @@ namespace RosSharp.RosBridgeClient
             Publishers.Remove(id);
         }
 
-#endregion
+        #endregion
 
-#region Subscribers
+        #region Subscribers
 
         public string Subscribe<T>(string topic, SubscriptionHandler<T> subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none") where T : Message
         {
@@ -154,7 +154,55 @@ namespace RosSharp.RosBridgeClient
                 Subscribers.Add(id, new Subscriber<T>(id, topic, subscriptionHandler, out subscription, throttle_rate, queue_length, fragment_size, compression));
                 Send(subscription);
             }
+
+            return id;
+        }
+
+        public string Subscribe<T>(string topic, SubscriptionHandler2<T> subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none") where T : Message
+        {
+            string id;
+            lock (SubscriberLock)
+            {
+                id = GetUnusedCounterID(Subscribers, topic);
+                Subscription subscription;
+                Subscribers.Add(id, new Subscriber<T>(id, topic, subscriptionHandler, out subscription, throttle_rate, queue_length, fragment_size, compression));
+                Send(subscription);
+            }
             
+            return id;
+        }
+
+        public string Subscribe(Type dataType, string topic, SubscriptionHandler2 subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
+        {
+            if (!typeof(Message).IsAssignableFrom(dataType))
+            {
+                throw new ArgumentException("dataType must be of type Message");
+            }
+
+            string id;
+            lock (SubscriberLock)
+            {
+                id = GetUnusedCounterID(Subscribers, topic);
+
+                // going from named type to generic type ctor is...interesting
+                var subscriberType = typeof(Subscriber<>);
+                Type[] typeArgs = { dataType };
+                var genericType = subscriberType.MakeGenericType(typeArgs);
+
+                var ctor = genericType.GetConstructor(
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic,
+                    null,
+                    new Type[] { typeof(string), typeof(string) },
+                    null
+                    );
+
+                var subscriber = ctor.Invoke(new object[] { id, topic }) as Subscriber;
+                var subscription = subscriber.CreateSubscription(subscriptionHandler);
+                Subscribers.Add(id, subscriber);
+
+                Send(subscription);
+            }
+
             return id;
         }
 
