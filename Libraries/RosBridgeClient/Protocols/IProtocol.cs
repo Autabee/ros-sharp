@@ -14,12 +14,14 @@ limitations under the License.
 */
 
 using System;
+using System.Threading.Tasks;
 
 namespace RosSharp.RosBridgeClient.Protocols
 {
     public interface IProtocol
     {
         void Connect();
+        Task ConnectAsync();
         void Close();
         bool IsAlive();
         void Send(byte[] data);

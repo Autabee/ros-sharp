@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using RosSharp.RosBridgeClient.Protocols;
 
 namespace RosSharp.RosBridgeClient
@@ -47,16 +48,20 @@ namespace RosSharp.RosBridgeClient
         private object SubscriberLock = new object();
 
 #if MS_LIBS_ONLY
-        public RosSocket(IProtocol protocol)
+        public RosSocket(IProtocol protocol, bool autoConnect = true)
         {
             this.protocol = protocol;
             Serializer = new MicrosoftSerializer();
 
             this.protocol.OnReceive += (sender, e) => Receive(sender, e);
-            this.protocol.Connect();
+
+            if (autoConnect)
+            {
+                Connect();
+            }
         }
 #else
-        public RosSocket(IProtocol protocol, SerializerEnum serializer = SerializerEnum.Microsoft)
+        public RosSocket(IProtocol protocol, SerializerEnum serializer = SerializerEnum.Microsoft, bool autoConnect = true)
         {
             this.protocol = protocol;
             switch (serializer)
@@ -78,9 +83,20 @@ namespace RosSharp.RosBridgeClient
                     }
             }
             this.protocol.OnReceive += (sender, e) => Receive(sender, e);
-            this.protocol.Connect();
+            if (autoConnect)
+            {
+                _ = Connect();
+            }
         }
 #endif
+
+        public async Task Connect()
+        {
+            if (!this.protocol.IsAlive())
+            {
+                await this.protocol.ConnectAsync();
+            }
+        }
 
         public void Close(int millisecondsWait = 0)
         {
