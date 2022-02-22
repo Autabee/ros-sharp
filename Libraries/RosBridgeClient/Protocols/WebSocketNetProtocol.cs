@@ -87,6 +87,8 @@ namespace RosSharp.RosBridgeClient.Protocols
 
         public bool IsAlive()
         {
+            if (clientWebSocket == null) return false;
+
             return clientWebSocket.State == WebSocketState.Open;
         }
 
