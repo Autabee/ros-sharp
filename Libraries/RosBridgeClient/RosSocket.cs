@@ -20,12 +20,12 @@ limitations under the License.
 
 
 
+using RosSharp.RosBridgeClient.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using RosSharp.RosBridgeClient.Protocols;
 
 namespace RosSharp.RosBridgeClient
 {
@@ -57,7 +57,7 @@ namespace RosSharp.RosBridgeClient
 
             if (autoConnect)
             {
-                Connect();
+                _ = Connect();
             }
         }
 #else
@@ -184,7 +184,7 @@ namespace RosSharp.RosBridgeClient
                 Subscribers.Add(id, new Subscriber<T>(id, topic, subscriptionHandler, out subscription, throttle_rate, queue_length, fragment_size, compression));
                 Send(subscription);
             }
-            
+
             return id;
         }
 
@@ -227,9 +227,9 @@ namespace RosSharp.RosBridgeClient
             Send(Subscribers[id].Unsubscribe());
             Subscribers.Remove(id);
         }
-#endregion
+        #endregion
 
-#region ServiceProviders
+        #region ServiceProviders
 
         public string AdvertiseService<Tin, Tout>(string service, ServiceCallHandler<Tin, Tout> serviceCallHandler) where Tin : Message where Tout : Message
         {
@@ -249,9 +249,9 @@ namespace RosSharp.RosBridgeClient
             ServiceProviders.Remove(id);
         }
 
-#endregion
+        #endregion
 
-#region ServiceConsumers
+        #region ServiceConsumers
 
         public string CallService<Tin, Tout>(string service, ServiceResponseHandler<Tout> serviceResponseHandler, Tin serviceArguments) where Tin : Message where Tout : Message
         {
@@ -262,7 +262,7 @@ namespace RosSharp.RosBridgeClient
             return id;
         }
 
-#endregion
+        #endregion
 
         private void Send<T>(T communication) where T : Communication
         {
@@ -275,7 +275,7 @@ namespace RosSharp.RosBridgeClient
             byte[] buffer = ((MessageEventArgs)e).RawData;
             DeserializedObject jsonElement = Serializer.Deserialize(buffer);
 
-            switch (jsonElement.GetProperty("op"))            
+            switch (jsonElement.GetProperty("op"))
             {
                 case "publish":
                     {
