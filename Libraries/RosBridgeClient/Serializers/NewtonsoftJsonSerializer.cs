@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Microsoft-libs only added 2022 by Chris Tacke (ctacke@gmail.com)
+
+#if !MS_LIBS_ONLY
+
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -56,3 +60,4 @@ namespace RosSharp.RosBridgeClient
         }
     }
 }
+#endif

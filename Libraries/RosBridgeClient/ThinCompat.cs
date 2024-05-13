@@ -1,7 +1,4 @@
 ﻿/*
-© Siemens AG, 2017-2018
-Author: Dr. Martin Bischoff (martin.bischoff@siemens.com)
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -13,21 +10,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+#if MS_LIBS_ONLY
+
 using System;
-using System.Threading.Tasks;
 
-namespace RosSharp.RosBridgeClient.Protocols
+namespace Newtonsoft.Json
 {
-    public interface IProtocol
+    // if we're only using MS JSON, this provides a redefinition of JsonIgnore to prevent compiler errors
+    public class JsonIgnore : Attribute
     {
-        void Connect();
-        Task ConnectAsync();
-        void Close();
-        bool IsAlive();
-        void Send(byte[] data);
-
-        event EventHandler OnReceive;
-        event EventHandler OnConnected;
-        event EventHandler OnClosed;
     }
 }
+#endif

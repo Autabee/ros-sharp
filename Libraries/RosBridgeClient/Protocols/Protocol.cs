@@ -11,10 +11,30 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+Microsoft-libs only added 2022 by Chris Tacke (ctacke@gmail.com)
+
 */
 
 namespace RosSharp.RosBridgeClient.Protocols
 {
+#if MS_LIBS_ONLY
+    public enum Protocol { WebSocketNET };
+
+    public class ProtocolInitializer
+    {
+        public static IProtocol GetProtocol(Protocol protocol, string serverURL)
+        {
+            switch (protocol)
+            {
+                case Protocol.WebSocketNET:
+                    return new WebSocketNetProtocol(serverURL);
+                default:
+                    return null;
+            }
+        }
+    }
+#else
     public enum Protocol { WebSocketSharp, WebSocketNET };
 
     public class ProtocolInitializer
@@ -32,4 +52,5 @@ namespace RosSharp.RosBridgeClient.Protocols
             }
         }
     }
+#endif
 }

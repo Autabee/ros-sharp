@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosBridgeClient", "RosBridgeClient\RosBridgeClient.csproj", "{27CD898A-8840-4CDD-A475-4A672FD2EF50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosBridgeClient.ros", "RosBridgeClient\RosBridgeClient.ros.csproj", "{27CD898A-8840-4CDD-A475-4A672FD2EF50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosBridgeClientTest", "RosBridgeClientTest\RosBridgeClientTest.csproj", "{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}"
 EndProject
@@ -15,36 +15,67 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageGeneration", "Messag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageGenerationConsoleTool", "MessageGenerationConsoleTool\MessageGenerationConsoleTool.csproj", "{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RosBridgeClient.ros2", "RosBridgeClient\RosBridgeClient.ros2.csproj", "{B30F9989-0F76-42D4-8BF5-62E6B944988A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug ROS|Any CPU = Debug ROS|Any CPU
+		Debug ROS2|Any CPU = Debug ROS2|Any CPU
+		Release ROS|Any CPU = Release ROS|Any CPU
+		Release ROS2|Any CPU = Release ROS2|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{27CD898A-8840-4CDD-A475-4A672FD2EF50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27CD898A-8840-4CDD-A475-4A672FD2EF50}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27CD898A-8840-4CDD-A475-4A672FD2EF50}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27CD898A-8840-4CDD-A475-4A672FD2EF50}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27CD898A-8840-4CDD-A475-4A672FD2EF50}.Debug ROS|Any CPU.ActiveCfg = Debug|Any CPU
+		{27CD898A-8840-4CDD-A475-4A672FD2EF50}.Debug ROS|Any CPU.Build.0 = Debug|Any CPU
+		{27CD898A-8840-4CDD-A475-4A672FD2EF50}.Debug ROS2|Any CPU.ActiveCfg = Debug|Any CPU
+		{27CD898A-8840-4CDD-A475-4A672FD2EF50}.Release ROS|Any CPU.ActiveCfg = Release|Any CPU
+		{27CD898A-8840-4CDD-A475-4A672FD2EF50}.Release ROS|Any CPU.Build.0 = Release|Any CPU
+		{27CD898A-8840-4CDD-A475-4A672FD2EF50}.Release ROS2|Any CPU.ActiveCfg = Release|Any CPU
+		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Debug ROS|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Debug ROS|Any CPU.Build.0 = Debug|Any CPU
+		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Debug ROS2|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Debug ROS2|Any CPU.Build.0 = Debug|Any CPU
+		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Release ROS|Any CPU.ActiveCfg = Release|Any CPU
+		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Release ROS|Any CPU.Build.0 = Release|Any CPU
+		{4E1BB3D0-8254-4D23-BD1B-F6EC7AA562FC}.Release ROS2|Any CPU.ActiveCfg = Release|Any CPU
+		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Debug ROS|Any CPU.ActiveCfg = Debug|Any CPU
+		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Debug ROS|Any CPU.Build.0 = Debug|Any CPU
+		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Debug ROS2|Any CPU.ActiveCfg = Debug|Any CPU
+		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Debug ROS2|Any CPU.Build.0 = Debug|Any CPU
+		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Release ROS|Any CPU.ActiveCfg = Release|Any CPU
+		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Release ROS|Any CPU.Build.0 = Release|Any CPU
+		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Release ROS2|Any CPU.ActiveCfg = Release|Any CPU
+		{D33101DA-7196-4545-B708-C8E0C308C5FA}.Release ROS2|Any CPU.Build.0 = Release|Any CPU
+		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Debug ROS|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Debug ROS|Any CPU.Build.0 = Debug|Any CPU
+		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Debug ROS2|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Debug ROS2|Any CPU.Build.0 = Debug|Any CPU
+		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Release ROS|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Release ROS|Any CPU.Build.0 = Release|Any CPU
+		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Release ROS2|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9BA7F5-EE69-47C9-87DE-53AA67253CB2}.Release ROS2|Any CPU.Build.0 = Release|Any CPU
+		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Debug ROS|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Debug ROS|Any CPU.Build.0 = Debug|Any CPU
+		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Debug ROS2|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Debug ROS2|Any CPU.Build.0 = Debug|Any CPU
+		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Release ROS|Any CPU.ActiveCfg = Release|Any CPU
+		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Release ROS|Any CPU.Build.0 = Release|Any CPU
+		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Release ROS2|Any CPU.ActiveCfg = Release|Any CPU
+		{F15D855D-FF65-4ADE-9972-31A3162E640E}.Release ROS2|Any CPU.Build.0 = Release|Any CPU
+		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Debug ROS|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Debug ROS|Any CPU.Build.0 = Debug|Any CPU
+		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Debug ROS2|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Debug ROS2|Any CPU.Build.0 = Debug|Any CPU
+		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Release ROS|Any CPU.ActiveCfg = Release|Any CPU
+		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Release ROS|Any CPU.Build.0 = Release|Any CPU
+		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Release ROS2|Any CPU.ActiveCfg = Release|Any CPU
+		{9BE5E2F6-3731-4843-83CB-226DF5DD58F0}.Release ROS2|Any CPU.Build.0 = Release|Any CPU
+		{B30F9989-0F76-42D4-8BF5-62E6B944988A}.Debug ROS|Any CPU.ActiveCfg = Debug|Any CPU
+		{B30F9989-0F76-42D4-8BF5-62E6B944988A}.Debug ROS2|Any CPU.ActiveCfg = Debug|Any CPU
+		{B30F9989-0F76-42D4-8BF5-62E6B944988A}.Debug ROS2|Any CPU.Build.0 = Debug|Any CPU
+		{B30F9989-0F76-42D4-8BF5-62E6B944988A}.Release ROS|Any CPU.ActiveCfg = Release|Any CPU
+		{B30F9989-0F76-42D4-8BF5-62E6B944988A}.Release ROS2|Any CPU.ActiveCfg = Release|Any CPU
+		{B30F9989-0F76-42D4-8BF5-62E6B944988A}.Release ROS2|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

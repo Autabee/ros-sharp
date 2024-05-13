@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.1;net461</TargetFrameworks>
+		<OutputType>Library</OutputType>
+
+		<AssemblyVersion>1.8.0</AssemblyVersion>
+		<FileVersion>1.8.0</FileVersion>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/siemens/ros-sharp</PackageProjectUrl>
+		<Description>A .NET Standard Fork of Siemens' rosbridge client for ROS</Description>
+		<RepositoryUrl>https://github.com/WildernessLabs/ros-sharp</RepositoryUrl>
+		<PackageTags>ROS;rosbridge</PackageTags>
+		<PackageId>rosbridge-client-ros</PackageId>
+		<Title>rosbridge client for ROS</Title>
+		<Version>1.8.0</Version>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>TRACE;MS_LIBS_ONLY;ROS</DefineConstants>
+		<OutputPath>bin\Debug\ros</OutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>TRACE;MS_LIBS_ONLY;ROS</DefineConstants>
+		<OutputPath>bin\Release\ros</OutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="obj\**" />
+		<EmbeddedResource Remove="obj\**" />
+		<None Remove="obj\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="packages.config" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Text.Json" Version="6.0.1" />
+		<PackageReference Include="System.Threading.Channels" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+</Project>

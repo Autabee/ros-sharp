@@ -102,9 +102,9 @@
     <Compile Include="UrdfTransferToRosConsoleExample.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RosBridgeClient\RosBridgeClient.csproj">
+    <ProjectReference Include="..\RosBridgeClient\RosBridgeClient.ros.csproj">
       <Project>{27cd898a-8840-4cdd-a475-4a672fd2ef50}</Project>
-      <Name>RosBridgeClient</Name>
+      <Name>RosBridgeClient.ros</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

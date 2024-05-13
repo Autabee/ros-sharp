@@ -11,6 +11,8 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+ROS1/ROS2 delineation 2022 by Chris Tacke (ctacke@gmail.com)
 */
 
 namespace RosSharp.RosBridgeClient.MessageTypes.Std
@@ -18,7 +20,14 @@ namespace RosSharp.RosBridgeClient.MessageTypes.Std
     public class Time : Message
     {
         public const string RosMessageName = "std_msgs/Time";
+#if ROS2 // ROS2 changed these
+        [System.Text.Json.Serialization.JsonPropertyName("sec")]
+#endif
         public uint secs { get; set; }
+
+#if ROS2
+        [System.Text.Json.Serialization.JsonPropertyName("nanosec")]
+#endif
         public uint nsecs { get; set; }
 
         public Time()
@@ -32,6 +41,5 @@ namespace RosSharp.RosBridgeClient.MessageTypes.Std
             this.secs = secs;
             this.nsecs = nsecs;
         }
-
     }
 }

@@ -7,7 +7,6 @@
  * <https://github.com/siemens/ros-sharp> 
  */
 
-
 namespace RosSharp.RosBridgeClient.MessageTypes.Std
 {
     public class EmptyRequest : Message

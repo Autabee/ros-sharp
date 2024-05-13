@@ -5,6 +5,9 @@
  * - Variable sized arrays will be initialized to array of size 0 
  * Please report any issues at 
  * <https://github.com/siemens/ros-sharp> 
+ 
+ ROS1/ROS2 delineation 2022 by Chris Tacke (ctacke@gmail.com)
+
  */
 
 namespace RosSharp.RosBridgeClient.MessageTypes.Std
@@ -18,7 +21,9 @@ namespace RosSharp.RosBridgeClient.MessageTypes.Std
         //  in a particular coordinate frame.
         //  
         //  sequence ID: consecutively increasing ID 
+#if !ROS2
         public uint seq { get; set; }
+#endif
         // Two-integer timestamp that is expressed as:
         //  * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')
         //  * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')
@@ -30,15 +35,15 @@ namespace RosSharp.RosBridgeClient.MessageTypes.Std
         public string frame_id { get; set; }
 
         public Header()
+            : this(0, new Time(), string.Empty)
         {
-            this.seq = 0;
-            this.stamp = new Time();
-            this.frame_id = "";
         }
 
         public Header(uint seq, Time stamp, string frame_id)
         {
+#if !ROS2
             this.seq = seq;
+#endif
             this.stamp = stamp;
             this.frame_id = frame_id;
         }

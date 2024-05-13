@@ -58,7 +58,6 @@ namespace RosSharp.RosBridgeClient.Protocols
             reader = channel.Reader;
             writer = channel.Writer;
 
-            clientWebSocket = new ClientWebSocket();
             uri = new Uri(uriString);
             cancellationToken = cancellationTokenSource.Token;
         }
@@ -68,8 +67,9 @@ namespace RosSharp.RosBridgeClient.Protocols
             Task.Run(() => ConnectAsync());
         }
 
-        public async void ConnectAsync()
+        public async Task ConnectAsync()
         {
+            clientWebSocket = new ClientWebSocket();
             await clientWebSocket.ConnectAsync(uri, cancellationToken);
             IsConnected.Set();
             OnConnected?.Invoke(null, EventArgs.Empty);
@@ -87,6 +87,8 @@ namespace RosSharp.RosBridgeClient.Protocols
 
         public bool IsAlive()
         {
+            if (clientWebSocket == null) return false;
+
             return clientWebSocket.State == WebSocketState.Open;
         }
 

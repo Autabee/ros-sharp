@@ -11,8 +11,13 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+Non-generic communication support 2022 by Chris Tacke (ctacke@gmail.com)
+
 */
 
+
+using System;
 
 namespace RosSharp.RosBridgeClient
 {
@@ -48,6 +53,24 @@ namespace RosSharp.RosBridgeClient
         {
             this.op = "unadvertise";
             this.topic = topic;
+        }
+    }
+
+    internal class Publication : Communication
+    {
+        public string topic { get; set; } // required
+        public object msg { get; set; } // required
+
+        internal Publication(string id, string topic, object msg) : base(id)
+        {
+            if (!(msg is Message))
+            {
+                throw new ArgumentException("msg parameter must derive from type 'Message'");
+            }
+
+            this.op = "publish";
+            this.topic = topic;
+            this.msg = msg;
         }
     }
 

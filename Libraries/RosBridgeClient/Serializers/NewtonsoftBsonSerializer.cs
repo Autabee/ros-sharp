@@ -16,6 +16,10 @@ limitations under the License.
 // Adding BSON (de-)seriliazation option
 // Shimadzu corp , 2019, Akira NODA (a-noda@shimadzu.co.jp / you.akira.noda@gmail.com)
 
+// Microsoft-libs only added 2022 by Chris Tacke (ctacke@gmail.com)
+
+# if !MS_LIBS_ONLY
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -62,3 +66,4 @@ namespace RosSharp.RosBridgeClient
         }
     }
 }
+#endif

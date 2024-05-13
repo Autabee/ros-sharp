@@ -11,6 +11,8 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+Microsoft-libs only added 2022 by Chris Tacke (ctacke@gmail.com)
 */
 
 using System;
@@ -50,14 +52,24 @@ namespace RosSharp.RosBridgeClient.UrdfTransfer
             FilesBeingProcessed = new Dictionary<string, bool>();
         }
 
+        private string SerializeToJson(string s)
+        {
+            // DEV NOTE: the ISerializer was not used here because it returns byte[] and the interface is not public, so it cannot be passed in.
+            // It's a shortcoming in the architecture of this class, but this is a workaround that maintains original behavior, but adds MS_LIBS_ONLY capabilities (ctacke 25Jan22)
+#if MS_LIBS_ONLY
+            return System.Text.Json.JsonSerializer.Serialize(s);
+#else
+            return Newtonsoft.Json.JsonConvert.SerializeObject(s);
+#endif
+        }
+
         public override void Transfer()
         {
             //Publish robot name param
             RosSocket.CallService<rosapi.SetParamRequest, rosapi.SetParamResponse>("/rosapi/set_param",
                 SetRobotNameHandler,
-                //new rosapi.SetParamRequest("/robot/name", JsonConvert.SerializeObject(RobotName))); for Newtonsoft.Json
-                new rosapi.SetParamRequest("/robot/name", JsonSerializer.Serialize(RobotName)));    //for system.text.json
-
+                new rosapi.SetParamRequest("/robot/name", SerializeToJson(RobotName)));
+            
             PublishRobotDescription();
 
             PublishResourceFiles();
@@ -71,8 +83,7 @@ namespace RosSharp.RosBridgeClient.UrdfTransfer
             //Publish /robot_description param
             RosSocket.CallService<rosapi.SetParamRequest, rosapi.SetParamResponse>("/rosapi/set_param",
                 SetRobotDescriptionHandler,
-                //new rosapi.SetParamRequest("/robot_description", JsonConvert.SerializeObject(urdfXDoc.ToString()))); for Newtonsoft.Json
-                new rosapi.SetParamRequest("/robot_description", JsonSerializer.Serialize(urdfXDoc.ToString())));    //for system.text.json
+                new rosapi.SetParamRequest("/robot_description", SerializeToJson(urdfXDoc.ToString())));
 
             //Send URDF file to ROS package
             string urdfPackagePath = "package://" + rosPackage + "/" + Path.GetFileName(urdfFilePath);
