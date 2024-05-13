@@ -166,8 +166,7 @@ namespace RosSharp.RosBridgeClient
             lock (SubscriberLock)
             {
                 id = GetUnusedCounterID(Subscribers, topic);
-                Subscription subscription;
-                Subscribers.Add(id, new Subscriber<T>(id, topic, subscriptionHandler, out subscription, throttle_rate, queue_length, fragment_size, compression));
+                Subscribers.Add(id, new Subscriber<T>(id, topic, subscriptionHandler, out Subscription subscription, throttle_rate, queue_length, fragment_size, compression));
                 Send(subscription);
             }
 
@@ -180,8 +179,7 @@ namespace RosSharp.RosBridgeClient
             lock (SubscriberLock)
             {
                 id = GetUnusedCounterID(Subscribers, topic);
-                Subscription subscription;
-                Subscribers.Add(id, new Subscriber<T>(id, topic, subscriptionHandler, out subscription, throttle_rate, queue_length, fragment_size, compression));
+                Subscribers.Add(id, new Subscriber2<T>(id, topic, subscriptionHandler, out Subscription subscription, throttle_rate, queue_length, fragment_size, compression));
                 Send(subscription);
             }
 
@@ -201,20 +199,7 @@ namespace RosSharp.RosBridgeClient
                 id = GetUnusedCounterID(Subscribers, topic);
 
                 // going from named type to generic type ctor is...interesting
-                var subscriberType = typeof(Subscriber<>);
-                Type[] typeArgs = { dataType };
-                var genericType = subscriberType.MakeGenericType(typeArgs);
-
-                var ctor = genericType.GetConstructor(
-                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic,
-                    null,
-                    new Type[] { typeof(string), typeof(string) },
-                    null
-                    );
-
-                var subscriber = ctor.Invoke(new object[] { id, topic }) as Subscriber;
-                var subscription = subscriber.CreateSubscription(subscriptionHandler);
-                Subscribers.Add(id, subscriber);
+                Subscribers.Add(id, new Subscriber2(id, topic, subscriptionHandler, dataType, out Subscription subscription, throttle_rate, queue_length, fragment_size, compression));
 
                 Send(subscription);
             }
@@ -305,6 +290,7 @@ namespace RosSharp.RosBridgeClient
 
         private List<Subscriber> SubscribersOf(string topic)
         {
+            
             return Subscribers.Where(pair => pair.Key.StartsWith(topic + ":")).Select(pair => pair.Value).ToList();
         }
 

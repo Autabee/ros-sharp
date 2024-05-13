@@ -13,17 +13,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace RosSharp.RosBridgeClient
 {
     class MicrosoftSerializer : ISerializer
     {
         public byte[] Serialize<T>(T obj)
+            => Serialize(obj, typeof(T));
+        public byte[] Serialize(object obj, Type type)
         {
             string json = JsonSerializer.Serialize(obj, obj.GetType());
-            return Encoding.ASCII.GetBytes(json);            
+            return Encoding.ASCII.GetBytes(json);
         }
 
         public DeserializedObject Deserialize(byte[] buffer)
@@ -32,12 +36,28 @@ namespace RosSharp.RosBridgeClient
             JsonElement jsonElement = JsonDocument.Parse(ascii).RootElement;
             return new MicrosoftJsonObject(jsonElement);
         }
-
+        
         public T Deserialize<T>(string json)
         {
             return JsonSerializer.Deserialize<T>(json);
         }
 
+        public object Deserialize(byte[] buffer, Type type)
+        {
+            string ascii = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+            JsonElement jsonElement = JsonDocument.Parse(ascii).RootElement;
+            var obj =  JsonSerializer.Deserialize(ascii,type);
+            if (obj == null)
+            {
+                throw new Exception("Failed to deserialize object");
+            }
+            return obj;
+        }
+
+        public object Deserialize(string rawData, Type type)
+        {
+            return JsonSerializer.Deserialize(rawData, type);
+        }
     }
 
     internal class MicrosoftJsonObject : DeserializedObject

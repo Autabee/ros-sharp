@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;net461</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
 
 		<AssemblyVersion>1.8.0</AssemblyVersion>
@@ -44,6 +44,12 @@
 		<PackageReference Include="System.Text.Json" Version="6.0.1" />
 		<PackageReference Include="System.Threading.Channels" Version="6.0.0" />
 	</ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>RosBridgeClient.rosTests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="Properties\" />

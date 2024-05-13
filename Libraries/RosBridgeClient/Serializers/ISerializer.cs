@@ -13,13 +13,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
+
 namespace RosSharp.RosBridgeClient
 {
     internal interface ISerializer
     {
-        byte[] Serialize<T>(T obj);
         DeserializedObject Deserialize(byte[] rawData);
+        object Deserialize(byte[] rawData, Type type);
+        object Deserialize(string rawData, Type type);
+        byte[] Serialize<T>(T obj);
         T Deserialize<T>(string JsonString);
+        byte[] Serialize(object obj, Type type);
     } 
 
     internal abstract class DeserializedObject
