@@ -8,6 +8,7 @@ using Assert = NUnit.Framework.Assert;
 using std_msgs = RosSharp.RosBridgeClient.MessageTypes.Std;
 using std_srvs = RosSharp.RosBridgeClient.MessageTypes.Std;
 using rosapi = RosSharp.RosBridgeClient.MessageTypes.Rosapi;
+using Microsoft.Extensions.Configuration;
 
 namespace RosSharp.RosBridgeClient.Tests
 {
@@ -24,7 +25,7 @@ namespace RosSharp.RosBridgeClient.Tests
         // launch after starting:
         // rosservice call /service_response_test
 
-        private static readonly string Uri = "ws://localhost:9090";
+        private static string Uri = "ws://localhost:9090";
         private static RosSocket RosSocket;
         private ManualResetEvent OnMessageReceived = new ManualResetEvent(false);
         private ManualResetEvent OnServiceReceived = new ManualResetEvent(false);
@@ -33,7 +34,10 @@ namespace RosSharp.RosBridgeClient.Tests
         [SetUp]
         public void Setup()
         {
-
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("secret.json", optional: false, reloadOnChange: true)
+                .Build();
+            Uri = config.GetSection("rosbridge_uri").Get<string>();
             RosSocket = new RosSocket(new RosBridgeClient.Protocols.WebSocketNetProtocol(Uri));
         }
 
@@ -100,6 +104,44 @@ namespace RosSharp.RosBridgeClient.Tests
             while (DateTime.Now < breaktime)
             {
                 if (messages.Where(o => o.data == message.data).Any())
+                {
+                    succes = true;
+                    break;
+                }
+                Thread.SpinWait(100);
+            }
+
+
+            RosSocket.Unsubscribe(sub_id);
+            RosSocket.Unadvertise(pub_id);
+
+            Assert.IsTrue(succes, "Failed to received Data");
+        }
+
+
+        [Test]
+        public void PubSubTest2_b()
+        {
+            List<object> messages = new List<object>();
+            var topic = "/pubsub_test2";
+            std_msgs.String message = new std_msgs.String
+            {
+                data = "publication test message data"
+            };
+
+
+            string sub_id = RosSocket.Subscribe(typeof(std_msgs.String),topic,
+                (string topic, object msg) => messages.Add(msg));
+            Thread.SpinWait(100);
+            string pub_id = RosSocket.Advertise(typeof(std_msgs.String), topic);
+            RosSocket.Publish(pub_id, message);
+
+
+            DateTime breaktime = DateTime.Now.AddSeconds(10);
+            bool succes = false;
+            while (DateTime.Now < breaktime)
+            {
+                if (messages.Where(o => o.GetType() == typeof(std_msgs.String) &&  ((std_msgs.String)o).data == message.data).Any())
                 {
                     succes = true;
                     break;

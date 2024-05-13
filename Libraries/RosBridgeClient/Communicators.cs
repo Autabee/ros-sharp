@@ -182,6 +182,7 @@ namespace RosSharp.RosBridgeClient
             Id = id;
             Topic = topic;
             SubscriptionHandler = subscriptionHandler;
+            TopicType = typeof(T);
 
             Subscription = new Subscription(id, Topic, GetRosName<T>(), throttle_rate, queue_length, fragment_size, compression);
             subscription = Subscription;

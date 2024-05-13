@@ -279,3 +279,9 @@ __pycache__/
 
 ### VisualStudio Patch ###
 build/
+
+*.[Ss]ecret.json
+*.[Ss]ecrets.json
+
+[Ss]ecret.json
+[Ss]ecrets.json
