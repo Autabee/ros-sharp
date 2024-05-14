@@ -43,9 +43,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="6.0.1" />
-    <PackageReference Include="System.Threading.Channels" Version="6.0.0" />
-  </ItemGroup>
+		<PackageReference Include="System.Text.Json" Version="8.0.3" />
+		<PackageReference Include="System.Threading.Channels" Version="8.0.0" />
+	</ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\" />
