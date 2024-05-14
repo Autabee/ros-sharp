@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageGenerationConsoleToo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RosBridgeClient.ros2", "RosBridgeClient\RosBridgeClient.ros2.csproj", "{B30F9989-0F76-42D4-8BF5-62E6B944988A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosBridgeClient.rosTests", "RosBridgeClient.rosTests1\RosBridgeClient.rosTests.csproj", "{0A501A82-6AB1-4947-8D83-E57A2B7764E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosBridgeClient.rosTests", "RosBridgeClient.rosTests\RosBridgeClient.rosTests.csproj", "{0A501A82-6AB1-4947-8D83-E57A2B7764E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
