@@ -1,20 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\common.props" />
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
-
+		<PackageId>Autabee.Rosbridge.Client</PackageId>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<TargetFrameworks>netstandard2.0;net48;net6.0</TargetFrameworks>
+		<Description>A .NET Standard Fork of Siemens' rosbridge client for ROS</Description>
+		<PackageProjectUrl>https://github.com/Autabee/ros-sharp</PackageProjectUrl>
+		<Version>1.9.0</Version>
 		<AssemblyVersion>1.9.0</AssemblyVersion>
 		<FileVersion>1.9.0</FileVersion>
-        <LangVersion>10</LangVersion>
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/siemens/ros-sharp</PackageProjectUrl>
-		<Description>A .NET Standard Fork of Siemens' rosbridge client for ROS</Description>
-		<RepositoryUrl>https://github.com/WildernessLabs/ros-sharp</RepositoryUrl>
 		<PackageTags>ROS;rosbridge</PackageTags>
-		<PackageId>Autabee.Rosbridge.Client</PackageId>
 		<Title>rosbridge client for ROS</Title>
-		<Version>1.9.0</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -26,6 +24,8 @@
 		<DefineConstants>TRACE;MS_LIBS_ONLY;ROS</DefineConstants>
 		<OutputPath>bin\Release\ros</OutputPath>
 	</PropertyGroup>
+
+	
 
 	<ItemGroup>
 		<Compile Remove="obj\**" />
