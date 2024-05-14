@@ -15,40 +15,53 @@ limitations under the License.
 
 // Adding BSON (de-)seriliazation option
 // Shimadzu corp , 2019, Akira NODA (a-noda@shimadzu.co.jp / you.akira.noda@gmail.com)
-
 // Microsoft-libs only added 2022 by Chris Tacke (ctacke@gmail.com)
+// Extended non-generic communication support 2024 by Ian Arbouw (ian-arbouw-1996@hotmail.com)
 
-# if !MS_LIBS_ONLY
+#if !MS_LIBS_ONLY
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace RosSharp.RosBridgeClient
 {
     internal class NewtonsoftBsonSerializer : ISerializer
     {
 
-        public byte[] Serialize<T>(T obj)
-        {
-            System.IO.MemoryStream ms = new System.IO.MemoryStream();
-            Newtonsoft.Json.Bson.BsonDataWriter writer = new Newtonsoft.Json.Bson.BsonDataWriter(ms);
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Serialize(writer, obj);
-            return ms.ToArray();   
-        }
-
         public DeserializedObject Deserialize(byte[] buffer)
-        {
-            System.IO.MemoryStream ms = new System.IO.MemoryStream(buffer);
-            Newtonsoft.Json.Bson.BsonDataReader reader = new Newtonsoft.Json.Bson.BsonDataReader(ms);
-            JObject jObject = new JsonSerializer().Deserialize<JObject>(reader);
-            return new NewtonsoftBsonObject(jObject);  
-        }
+            => (DeserializedObject)Deserialize(buffer, typeof(NewtonsoftBsonObject));
 
         public T Deserialize<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json);
         }
+
+        public object Deserialize(byte[] buffer, Type type)
+        {
+            System.IO.MemoryStream ms = new System.IO.MemoryStream(buffer);
+            Newtonsoft.Json.Bson.BsonDataReader reader = new Newtonsoft.Json.Bson.BsonDataReader(ms);
+            return new JsonSerializer().Deserialize(reader, type);
+        }
+
+        public object Deserialize(string json, Type type)
+        {
+            var jsonReader = new JsonTextReader(new System.IO.StringReader(json));
+            return new JsonSerializer().Deserialize(jsonReader, type);
+        }
+
+        public byte[] Serialize<T>(T obj)
+            => Serialize(obj, typeof(T));
+        public byte[] Serialize(object obj, Type type)
+        {
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            Newtonsoft.Json.Bson.BsonDataWriter writer = new Newtonsoft.Json.Bson.BsonDataWriter(ms);
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Serialize(writer, obj);
+            return ms.ToArray();
+        }
+
+
     }
 
     internal class NewtonsoftBsonObject : DeserializedObject

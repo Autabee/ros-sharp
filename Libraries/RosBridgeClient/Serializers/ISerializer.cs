@@ -13,6 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Extended non-generic communication support 2024 by Ian Arbouw (ian-arbouw-1996@hotmail.com)
+
 using System;
 
 namespace RosSharp.RosBridgeClient
@@ -20,12 +22,12 @@ namespace RosSharp.RosBridgeClient
     internal interface ISerializer
     {
         DeserializedObject Deserialize(byte[] rawData);
+        T Deserialize<T>(string json);
         object Deserialize(byte[] rawData, Type type);
-        object Deserialize(string rawData, Type type);
+        object Deserialize(string json, Type type);
         byte[] Serialize<T>(T obj);
-        T Deserialize<T>(string JsonString);
         byte[] Serialize(object obj, Type type);
-    } 
+    }
 
     internal abstract class DeserializedObject
     {

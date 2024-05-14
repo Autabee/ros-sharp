@@ -17,6 +17,7 @@ limitations under the License.
 // Shimadzu corp , 2019, Akira NODA (a-noda@shimadzu.co.jp / you.akira.noda@gmail.com)
 
 // Expanded Advertise, thinning serializers, 2022, Chris Tacke (ctacke@gmail.com)
+// Extend to support non-generic communication, 2024, Ian Arbouw (ian-arbouw-1996@hotmail.com)
 
 
 
@@ -160,30 +161,17 @@ namespace RosSharp.RosBridgeClient
 
         #region Subscribers
 
+        #region ObjectFeedback
         public string Subscribe<T>(string topic, SubscriptionHandler<T> subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none") where T : Message
         {
-            string id;
-            lock (SubscriberLock)
-            {
-                id = GetUnusedCounterID(Subscribers, topic);
-                Subscribers.Add(id, new Subscriber<T>(id, topic, subscriptionHandler, out Subscription subscription, throttle_rate, queue_length, fragment_size, compression));
-                Send(subscription);
-            }
-
-            return id;
+            Func<string, Subscriber> func = (string id) => new Subscriber<T>(id, topic, subscriptionHandler, throttle_rate, queue_length, fragment_size, compression);
+            return AddSubscription(topic, func);
         }
 
         public string Subscribe<T>(string topic, SubscriptionHandler2<T> subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none") where T : Message
         {
-            string id;
-            lock (SubscriberLock)
-            {
-                id = GetUnusedCounterID(Subscribers, topic);
-                Subscribers.Add(id, new Subscriber2<T>(id, topic, subscriptionHandler, out Subscription subscription, throttle_rate, queue_length, fragment_size, compression));
-                Send(subscription);
-            }
-
-            return id;
+            Func<string, Subscriber> func = (string id) => new Subscriber2<T>(id, topic, subscriptionHandler, throttle_rate, queue_length, fragment_size, compression);
+            return AddSubscription(topic, func);
         }
 
         public string Subscribe(Type dataType, string topic, SubscriptionHandler2 subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
@@ -192,16 +180,56 @@ namespace RosSharp.RosBridgeClient
             {
                 throw new ArgumentException("dataType must be of type Message");
             }
+            Func<string, Subscriber> func = (string id) => new Subscriber2(id, topic, subscriptionHandler, dataType, throttle_rate, queue_length, fragment_size, compression);
+            return AddSubscription(topic, func);
+        }
+        #endregion
 
+        #region JsonFeedback
+        public string Subscribe(Type dataType, string topic, SubscriptionHandler subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
+        {
+            if (!typeof(Message).IsAssignableFrom(dataType))
+            {
+                throw new ArgumentException("dataType must be of type Message");
+            }
+            return Subscribe(Communicator.GetRosName(dataType), topic, subscriptionHandler, throttle_rate, queue_length, fragment_size, compression);
+        }
+
+        public string Subscribe(string rosName, string topic, SubscriptionHandler subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
+        {
+            Func<string, Subscriber> func = (string id) => new SubscriberJson(rosName,id, topic, subscriptionHandler, throttle_rate, queue_length, fragment_size, compression);
+            return AddSubscription(topic, func);
+        }
+
+        public string Subscribe(Type dataType, string topic, SubscriptionHandlerJson subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
+        {
+            if (!typeof(Message).IsAssignableFrom(dataType))
+            {
+                throw new ArgumentException("dataType must be of type Message");
+            }
+            Func<string, Subscriber> func = (string id) => new Subscriber2Json(dataType,id, topic, subscriptionHandler, throttle_rate, queue_length, fragment_size, compression);
+            return AddSubscription(topic, func);
+        }
+
+        public string Subscribe(string rosName, string topic, SubscriptionHandlerJson subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
+        {
+            Func<string, Subscriber> func = (string id) => new Subscriber2Json(rosName, id, topic, subscriptionHandler, throttle_rate, queue_length, fragment_size, compression);
+            return AddSubscription(topic, func);
+        }
+        #endregion
+
+        private string AddSubscription(string topic, Func<string, Subscriber> func)
+        {
             string id;
             lock (SubscriberLock)
             {
                 id = GetUnusedCounterID(Subscribers, topic);
 
                 // going from named type to generic type ctor is...interesting
-                Subscribers.Add(id, new Subscriber2(id, topic, subscriptionHandler, dataType, out Subscription subscription, throttle_rate, queue_length, fragment_size, compression));
+                Subscriber subscriber = func(id);
+                Subscribers.Add(id, subscriber);
 
-                Send(subscription);
+                Send(subscriber.Subscription);
             }
 
             return id;
