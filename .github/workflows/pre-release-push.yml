@@ -17,14 +17,14 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
       - name: Restore dependencies
-        run: dotnet restore ./Libraries
+        run: dotnet restore ./Libraries/RosBridgeClient/RosBridgeClient.ros.csproj
       - name: Build
-        run: dotnet build --configuration Release --no-restore ./Libraries
+        run: dotnet build --configuration Release --no-restore ./Libraries/RosBridgeClient/RosBridgeClient.ros.csproj
       # - name: Test
       #   run: dotnet test --configuration Release --no-build --verbosity normal ./src
         
       - name: Publish opc client to NuGet
-        continue-on-error: true
+        continue-on-error: false
         uses: alirezanet/publish-nuget@v3.0.4
         with:
             PROJECT_FILE_PATH: ./Libraries/RosBridgeClient/RosBridgeClient.ros.csproj
