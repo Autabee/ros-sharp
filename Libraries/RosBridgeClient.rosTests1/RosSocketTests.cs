@@ -14,6 +14,7 @@ limitations under the License.
 */
 
 // adjusted to remove the requirement of launching ros services besides the rosbridge server by Ian Arbouw (ian-arbouw-1996@hotmail.com)
+// fix repeat due to framework shift causing errored tests by Ian Arbouw (ian-arbouw-1996@hotmail.com)
 
 using NUnit.Framework;
 using RosSharp.RosBridgeClient;
@@ -33,7 +34,17 @@ namespace RosSharp.RosBridgeClient.Tests
 {
     [TestFixture()]
     public class RosSocketTests
-    { 
+    {
+#if NETFRAMEWORK
+        string framework = "/NET21";
+#elif NET6_0
+        string framework = "/NET6";
+#elif NET8_0
+        string framework = "/NET8";
+#else
+        string framework = "/NET";
+#endif
+
         private static string Uri = "ws://localhost:9090";
         private static RosSocket RosSocket;
         private ManualResetEvent OnMessageReceived = new ManualResetEvent(false);
@@ -46,7 +57,8 @@ namespace RosSharp.RosBridgeClient.Tests
             var config = new ConfigurationBuilder()
                 .AddJsonFile("secret.json", optional: false, reloadOnChange: true)
                 .Build();
-            Uri = config.GetSection("rosbridge_uri").Get<string>();
+            
+            Uri = config.GetSection("rosbridge_uri").Get<string>()?? Uri;
             RosSocket = new RosSocket(new RosBridgeClient.Protocols.WebSocketNetProtocol(Uri));
         }
 
@@ -60,7 +72,7 @@ namespace RosSharp.RosBridgeClient.Tests
         public void PubSubTest()
         {
             List<std_msgs.String> messages = new List<std_msgs.String>();
-            var topic = "/pubsub_test";
+            var topic = framework+"/pubsub_test";
             string pub_id = RosSocket.Advertise(typeof(std_msgs.String),topic);
             std_msgs.String message = new std_msgs.String
             {
@@ -94,7 +106,7 @@ namespace RosSharp.RosBridgeClient.Tests
         public void PubSubTest2a()
         {
             List<std_msgs.String> messages = new List<std_msgs.String>();
-            var topic = "/pubsub_test2";
+            var topic = framework + "/pubsub_test2";
             std_msgs.String message = new std_msgs.String
             {
                 data = "publication test message data"
@@ -132,7 +144,7 @@ namespace RosSharp.RosBridgeClient.Tests
         public void PubSubTest2b()
         {
             List<object> messages = new List<object>();
-            var topic = "/pubsub_test2";
+            var topic = framework + "/pubsub_test2";
             std_msgs.String message = new std_msgs.String
             {
                 data = "publication test message data"
@@ -169,7 +181,7 @@ namespace RosSharp.RosBridgeClient.Tests
         public void PubSubTestJson1()
         {
             List<std_msgs.String> messages = new List<std_msgs.String>();
-            var topic = "/pubsub_test2";
+            var topic = framework + "/pubsub_test2";
             std_msgs.String message = new std_msgs.String
             {
                 data = "publication test message data"
@@ -212,7 +224,7 @@ namespace RosSharp.RosBridgeClient.Tests
         public void PubSubTestJson2a()
         {
             List<string> messages = new List<string>();
-            var topic = "/pubsub_test2";
+            var topic = framework + "/pubsub_test2";
             std_msgs.String message = new std_msgs.String
             {
                 data = "publication test message data"
@@ -257,7 +269,7 @@ namespace RosSharp.RosBridgeClient.Tests
         public void PubSubTestJson2b()
         {
             List<string> messages = new List<string>();
-            var topic = "/pubsub_test2";
+            var topic = framework + "/pubsub_test2";
             std_msgs.String message = new std_msgs.String
             {
                 data = "publication test message data"
