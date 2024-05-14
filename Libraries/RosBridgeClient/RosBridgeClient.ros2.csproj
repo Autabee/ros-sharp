@@ -1,20 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net48</TargetFrameworks>
     <RuntimeIdentifiers>win</RuntimeIdentifiers>
     <OutputType>Library</OutputType>
 
-	  <AssemblyVersion>1.8.0</AssemblyVersion>
-	  <FileVersion>1.8.0</FileVersion>
+      <LangVersion>10</LangVersion>
+	  <AssemblyVersion>1.9.0</AssemblyVersion>
+	  <FileVersion>1.9.0</FileVersion>
 	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	  <PackageProjectUrl>https://github.com/siemens/ros-sharp</PackageProjectUrl>
 	  <Description>A .NET Standard Fork of Siemens' rosbridge client for ROS2</Description>
 	  <RepositoryUrl>https://github.com/WildernessLabs/ros-sharp</RepositoryUrl>
-	  <PackageTags>ROS2; ROS;rosbridge</PackageTags>
+	  <PackageTags>ROS2;ROS;rosbridge</PackageTags>
 	  <PackageId>rosbridge-client-ros2</PackageId>
 	  <Title>rosbridge client for ROS2</Title>
-	  <Version>1.8.0</Version>
+	  <Version>1.9.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

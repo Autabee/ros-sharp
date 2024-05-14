@@ -1,19 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;net461</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
 
-		<AssemblyVersion>1.8.0</AssemblyVersion>
-		<FileVersion>1.8.0</FileVersion>
+		<AssemblyVersion>1.9.0</AssemblyVersion>
+		<FileVersion>1.9.0</FileVersion>
+        <LangVersion>10</LangVersion>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/siemens/ros-sharp</PackageProjectUrl>
 		<Description>A .NET Standard Fork of Siemens' rosbridge client for ROS</Description>
 		<RepositoryUrl>https://github.com/WildernessLabs/ros-sharp</RepositoryUrl>
 		<PackageTags>ROS;rosbridge</PackageTags>
-		<PackageId>rosbridge-client-ros</PackageId>
+		<PackageId>Autabee.Rosbridge.Client</PackageId>
 		<Title>rosbridge client for ROS</Title>
-		<Version>1.8.0</Version>
+		<Version>1.9.0</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,14 +37,23 @@
 		<Compile Remove="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 
+    <ItemGroup>
+        <None Remove="packages.config" />
+    </ItemGroup>
+    
 	<ItemGroup>
-		<None Remove="packages.config" />
+		<PackageReference Include="System.Text.Json" Version="8.0.3" />
+		<PackageReference Include="System.Threading.Channels" Version="8.0.0" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="System.Text.Json" Version="6.0.1" />
-		<PackageReference Include="System.Threading.Channels" Version="6.0.0" />
-	</ItemGroup>
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>RosBridgeClient.rosTests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>RosBridgeClientTest</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="Properties\" />
