@@ -19,9 +19,9 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Restore dependencies
-        run: dotnet restore RosSharp.sln
+        run: dotnet restore ./Libraries
       - name: Build
-        run: dotnet build --configuration Release --no-restore RosSharp.sln
+        run: dotnet build --configuration Release --no-restore ./Libraries
       # - name: Test
       #   run: dotnet test --configuration Release --no-build --verbosity normal ./src
         
@@ -29,9 +29,9 @@ jobs:
         continue-on-error: true
         uses: alirezanet/publish-nuget@v3.0.4
         with:
-            PROJECT_FILE_PATH: RosBridgeClient/RosBridgeClient.ros.csproj
+            PROJECT_FILE_PATH: ./Libraries/RosBridgeClient/RosBridgeClient.ros.csproj
             NUGET_KEY: ${{secrets.NUGET_KEY}}
-            VERSION_FILE_PATH: RosBridgeClient/RosBridgeClient.ros.csproj
+            VERSION_FILE_PATH: ./Libraries/RosBridgeClient/RosBridgeClient.ros.csproj
             INCLUDE_SYMBOLS: true
             NO_BUILD: true
 
