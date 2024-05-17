@@ -19,7 +19,7 @@ using System;
 
 namespace RosSharp.RosBridgeClient
 {
-    internal interface ISerializer
+    public interface ISerializer
     {
         DeserializedObject Deserialize(byte[] rawData);
         T Deserialize<T>(string json);
@@ -29,7 +29,7 @@ namespace RosSharp.RosBridgeClient
         byte[] Serialize(object obj, Type type);
     }
 
-    internal abstract class DeserializedObject
+    public abstract class DeserializedObject
     {
         internal abstract string GetProperty(string property);
     }

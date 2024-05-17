@@ -21,12 +21,12 @@ using System;
 
 namespace RosSharp.RosBridgeClient
 {
-    internal abstract class Communication
+    public abstract class Communication
     {
         public string op { get; set; } // required
         public string id { get; set; } // optional
 
-        internal Communication(string id = null)
+        public Communication(string id = null)
         {
             this.id = id;
         }
@@ -87,7 +87,7 @@ namespace RosSharp.RosBridgeClient
         }
     }
 
-    internal class Subscription : Communication
+    public class Subscription : Communication
     {
         public string topic { get; set; } // required
         public string type { get; set; } // optional
@@ -96,7 +96,7 @@ namespace RosSharp.RosBridgeClient
         public int fragment_size { get; set; } // optional
         public string compression { get; set; } // optional
 
-        internal Subscription(string id, string topic, string type, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none") : base(id)
+        public Subscription(string id, string topic, string type, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none") : base(id)
         {
             this.op = "subscribe";
             this.topic = topic;

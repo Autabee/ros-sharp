@@ -32,7 +32,7 @@ namespace RosSharp.RosBridgeClient
     public delegate void SubscriptionHandler2(string topic, object data);
     public delegate void SubscriptionHandlerJson(string topic, string data, string ros_type);
 
-    internal abstract class Communicator
+    public abstract class Communicator
     {
         public static string GetRosName<T>() where T : Message
         {
@@ -88,15 +88,15 @@ namespace RosSharp.RosBridgeClient
         }
     }
 
-    internal abstract class Subscriber : Communicator
+    public abstract class Subscriber : Communicator
     {
-        internal abstract string Id { get; }
-        internal abstract string Topic { get; }
-        internal abstract Type TopicType { get; }
-        internal abstract Subscription Subscription { get; }
+        public abstract string Id { get; }
+        public abstract string Topic { get; }
+        public abstract Type TopicType { get; }
+        public abstract Subscription Subscription { get; }
 
 
-        internal abstract void Receive(string message, ISerializer serializer);
+        public abstract void Receive(string message, ISerializer serializer);
 
         internal Unsubscription Unsubscribe()
         {
@@ -107,15 +107,15 @@ namespace RosSharp.RosBridgeClient
     internal class Subscriber<T> : Subscriber where T : Message
     {
 
-        internal SubscriptionHandler<T> SubscriptionHandler { get; }
+        public SubscriptionHandler<T> SubscriptionHandler { get; }
 
-        internal override string Id { get; }
+        public override string Id { get; }
 
-        internal override string Topic { get; }
+        public override string Topic { get; }
 
-        internal override Type TopicType { get => typeof(T); }
+        public override Type TopicType { get => typeof(T); }
 
-        internal override Subscription Subscription { get; }
+        public override Subscription Subscription { get; }
 
         internal Subscriber(string id, string topic, SubscriptionHandler<T> subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
         {
@@ -125,7 +125,7 @@ namespace RosSharp.RosBridgeClient
             this.Subscription = new Subscription(id, Topic, GetRosName<T>(), throttle_rate, queue_length, fragment_size, compression);
         }
 
-        internal override void Receive(string message, ISerializer serializer)
+        public override void Receive(string message, ISerializer serializer)
         {
             SubscriptionHandler?.Invoke(serializer.Deserialize<T>(message));
         }
@@ -135,15 +135,15 @@ namespace RosSharp.RosBridgeClient
     internal class Subscriber2 : Subscriber
     {
 
-        internal override string Id { get; }
+        public override string Id { get; }
 
-        internal override string Topic { get; }
+        public override string Topic { get; }
 
-        internal override Type TopicType { get; }
+        public override Type TopicType { get; }
 
-        internal override Subscription Subscription { get; }
+        public override Subscription Subscription { get; }
 
-        internal SubscriptionHandler2 SubscriptionHandler { get; }
+        public SubscriptionHandler2 SubscriptionHandler { get; }
 
         internal Subscriber2(string id, string topic, SubscriptionHandler2 subscriptionHandler, Type type, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
         {
@@ -159,7 +159,7 @@ namespace RosSharp.RosBridgeClient
 
             Subscription = new Subscription(id, Topic, GetRosName(type), throttle_rate, queue_length, fragment_size, compression);
         }
-        internal override void Receive(string message, ISerializer serializer)
+        public override void Receive(string message, ISerializer serializer)
         {
             SubscriptionHandler?.Invoke(Topic, serializer.Deserialize(message, TopicType));
         }
@@ -168,15 +168,15 @@ namespace RosSharp.RosBridgeClient
     internal class Subscriber2<T> : Subscriber where T : Message
     {
 
-        internal override string Id { get; }
+        public override string Id { get; }
 
-        internal override string Topic { get; }
+        public override string Topic { get; }
 
-        internal override Type TopicType { get; }
+        public override Type TopicType { get; }
 
-        internal override Subscription Subscription { get; }
+        public override Subscription Subscription { get; }
 
-        internal SubscriptionHandler2<T> SubscriptionHandler { get; }
+        public SubscriptionHandler2<T> SubscriptionHandler { get; }
 
         internal Subscriber2(string id, string topic, SubscriptionHandler2<T> subscriptionHandler,  int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
         {
@@ -188,7 +188,7 @@ namespace RosSharp.RosBridgeClient
             Subscription = new Subscription(id, Topic, GetRosName<T>(), throttle_rate, queue_length, fragment_size, compression);
             
         }
-        internal override void Receive(string message, ISerializer serializer)
+        public override void Receive(string message, ISerializer serializer)
         {
             SubscriptionHandler?.Invoke(Topic, (T)serializer.Deserialize(message, TopicType));
         }
@@ -197,17 +197,17 @@ namespace RosSharp.RosBridgeClient
     internal class Subscriber2Json : Subscriber 
     {
 
-        internal override string Id { get; }
+        public override string Id { get; }
 
-        internal override string Topic { get; }
+        public override string Topic { get; }
 
-        internal override Type TopicType { get; }
+        public override Type TopicType { get; }
 
-        internal override Subscription Subscription { get; }
+        public override Subscription Subscription { get; }
 
-        internal string rosName { get; }
+        public string rosName { get; }
 
-        internal SubscriptionHandlerJson SubscriptionHandler { get; }
+        public SubscriptionHandlerJson SubscriptionHandler { get; }
 
         internal Subscriber2Json(Type type, string id, string topic, SubscriptionHandlerJson subscriptionHandler,  int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
         {
@@ -235,7 +235,7 @@ namespace RosSharp.RosBridgeClient
             
         }
 
-        internal override void Receive(string message, ISerializer serializer)
+        public override void Receive(string message, ISerializer serializer)
         {
             SubscriptionHandler?.Invoke(Topic, message, rosName);
         }
@@ -245,17 +245,17 @@ namespace RosSharp.RosBridgeClient
     internal class SubscriberJson : Subscriber
     {
 
-        internal override string Id { get; }
+        public override string Id { get; }
 
-        internal override string Topic { get; }
+        public override string Topic { get; }
 
-        internal override Type TopicType { get; }
+        public override Type TopicType { get; }
 
-        internal override Subscription Subscription { get; }
+        public override Subscription Subscription { get; }
 
-        internal string rosName { get; }
+        public string rosName { get; }
 
-        internal SubscriptionHandler SubscriptionHandler { get; }
+        public SubscriptionHandler SubscriptionHandler { get; }
 
         internal SubscriberJson(string rosName, string id, string topic, SubscriptionHandler subscriptionHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
         {
@@ -268,7 +268,7 @@ namespace RosSharp.RosBridgeClient
 
         }
 
-        internal override void Receive(string message, ISerializer serializer)
+        public override void Receive(string message, ISerializer serializer)
         {
             SubscriptionHandler?.Invoke(message);
         }
