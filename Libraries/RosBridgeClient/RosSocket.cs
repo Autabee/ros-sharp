@@ -216,9 +216,9 @@ namespace RosSharp.RosBridgeClient
             Func<string, Subscriber> func = (string id) => new Subscriber2Json(rosName, id, topic, subscriptionHandler, throttle_rate, queue_length, fragment_size, compression);
             return AddSubscription(topic, func);
         }
-        #endregion
 
-        private string AddSubscription(string topic, Func<string, Subscriber> func)
+        #endregion
+        public string AddSubscription(string topic, Func<string, Subscriber> func)
         {
             string id;
             lock (SubscriberLock)

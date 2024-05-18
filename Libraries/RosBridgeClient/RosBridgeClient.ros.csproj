@@ -8,10 +8,10 @@
 		<TargetFrameworks>netstandard2.0;net48;net6.0</TargetFrameworks>
 		<Description>A .NET Standard Fork of Siemens' rosbridge client for ROS</Description>
 		<PackageProjectUrl>https://github.com/Autabee/ros-sharp</PackageProjectUrl>
-		<Version>1.9.1</Version>
+		<Version>1.9.2</Version>
         <LangVersion>10</LangVersion>
-		<AssemblyVersion>1.9.1</AssemblyVersion>
-		<FileVersion>1.9.1</FileVersion>
+		<AssemblyVersion>1.9.2</AssemblyVersion>
+		<FileVersion>1.9.2</FileVersion>
 		<PackageTags>ROS;rosbridge</PackageTags>
 		<Title>rosbridge client for ROS</Title>
 	</PropertyGroup>
