@@ -18,6 +18,7 @@ limitations under the License.
 
 // Expanded Advertise, thinning serializers, 2022, Chris Tacke (ctacke@gmail.com)
 // Extend to support non-generic communication, 2024, Ian Arbouw (ian-arbouw-1996@hotmail.com)
+// IsConnected, 2024, Ian Arbouw (ian-arbouw-1996@hotmail.com)
 
 
 
@@ -52,6 +53,10 @@ namespace RosSharp.RosBridgeClient
         public RosSocket(IProtocol protocol, bool autoConnect = true)
         {
             this.protocol = protocol;
+            if (protocol == null )
+            {
+                throw new ArgumentNullException("protocol");
+            }
             Serializer = new MicrosoftSerializer();
 
             this.protocol.OnReceive += (sender, e) => Receive(sender, e);
@@ -98,6 +103,8 @@ namespace RosSharp.RosBridgeClient
                 await this.protocol.ConnectAsync();
             }
         }
+
+        public bool IsConnected => this.protocol != null? this.protocol.IsAlive(): false;
 
         public void Close(int millisecondsWait = 0)
         {
